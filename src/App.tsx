@@ -1,26 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { List, ListItem, Typography } from '@material-ui/core';
+import React, { useState } from 'react';
+import ToDoForm from './components/ToDoForm';
+import ToDoItem from './components/TodoItem';
 
-function App() {
+interface TodoType {
+  id: number | string;
+  todo: string;
+  completed: boolean;
+}
+
+const App: React.FC = () => {
+  const [todos, setTodos] = useState<Array<TodoType>>([]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="flex-center">
+      <h1>To Do List</h1>
+      <h3>{new Date().toString()}</h3>
+      <ToDoForm todos={{ todos, setTodos }} />
+      <List className="shadow w-full rounded border">
+        {todos.length === 0 ? (
+          <ListItem dense>
+            <Typography variant="h6">No tasks to do yet...</Typography>
+          </ListItem>
+        ) : (
+          todos.map(todo => <ToDoItem todo={todo} />)
+        )}
+      </List>
     </div>
   );
-}
+};
 
 export default App;
